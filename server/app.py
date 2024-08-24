@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
 
-client = MongoClient(os.getenv('MONGO_URI'))
+client = MongoClient(os.getenv('mongodb+srv://jarvis:jarvis123@jarvis-cluster.7afrxiy.mongodb.net/?retryWrites=true&w=majority&appName=Jarvis-Cluster'))
 db = client['statusCode']
 session_collection = db['session']
 
