@@ -15,9 +15,40 @@ const Render3D = () => {
   const [isDistracted, setIsDistracted] = useState(false);
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const containerRef = useRef(null); // Ref for the container element
 
   const toggleMaximize = () => {
     setIsMaximized(!isMaximized);
+
+    if (!isMaximized) {
+      // Enter full-screen mode
+      if (containerRef.current.requestFullscreen) {
+        containerRef.current.requestFullscreen();
+      } else if (containerRef.current.mozRequestFullScreen) {
+        // Firefox
+        containerRef.current.mozRequestFullScreen();
+      } else if (containerRef.current.webkitRequestFullscreen) {
+        // Chrome, Safari and Opera
+        containerRef.current.webkitRequestFullscreen();
+      } else if (containerRef.current.msRequestFullscreen) {
+        // IE/Edge
+        containerRef.current.msRequestFullscreen();
+      }
+    } else {
+      // Exit full-screen mode
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        // Firefox
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        // Chrome, Safari and Opera
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        // IE/Edge
+        document.msExitFullscreen();
+      }
+    }
   };
 
   const checkDistractionRepeatedly = async () => {
@@ -41,8 +72,7 @@ const Render3D = () => {
     setSessionStartTime(new Date());
 
     checkDistractionRepeatedly();
-
-  }, []); 
+  }, []);
 
   const handleEndSession = async () => {
     const endTime = new Date();
@@ -73,7 +103,7 @@ const Render3D = () => {
   };
 
   return (
-    <div className="relative h-screen w-full">
+    <div ref={containerRef} className="relative h-screen w-full">
       <video
         ref={videoRef}
         className="absolute top-0 left-0 w-full h-full object-cover -z-10 transition duration-150 ease-in-out brightness-[50%] lg:brightness-[30%]"
@@ -82,35 +112,36 @@ const Render3D = () => {
         loop
         muted
       />
-      {isMaximized ? (
-        <MagnifyingGlassMinusIcon
-          className="size-12 absolute bottom-2 right-2 z-50 p-2 bg-black backdrop-blur-lg rounded-full cursor-pointer text-neon border-2 border-neon"
-          onClick={toggleMaximize}
-        />
-      ) : (
-        <MagnifyingGlassPlusIcon
-          className="size-12 absolute bottom-2 right-2 z-50 p-2 bg-black backdrop-blur-lg rounded-full cursor-pointer text-neon border-2 border-neon"
-          onClick={toggleMaximize}
-        />
-      )}
 
       {!isMaximized && <Navbar />}
 
       <div
         style={{
           height: "100vh",
-          padding: isMaximized ? "0px" : "100px",
           width: "100%",
           transition: "0.15s ease-in-out",
         }}
       >
-        <div className="flex justify-between absolute right-2 mt-2 mb-12">
-          <button
-            className="hidden hover:bg-red-500 hover:text-white bg-white lg:flex items-center justify-between py-2 px-5 gap-4 rounded-full transition duration-300 ease-in-out hover:scale-105"
-            onClick={handleEndSession}
-          >
-            End Session
-          </button>
+        <div>
+          <div className="flex justify-between absolute right-2 mt-2 mb-12">
+            <button
+              className="hidden hover:bg-red-500 hover:text-white bg-white lg:flex items-center justify-between py-2 px-5 gap-4 rounded-full transition duration-300 ease-in-out hover:scale-105"
+              onClick={handleEndSession}
+            >
+              End Session
+            </button>
+          </div>
+          {isMaximized ? (
+            <MagnifyingGlassMinusIcon
+              className="size-12 absolute bottom-2 right-2 z-50 p-2 bg-black backdrop-blur-lg rounded-full cursor-pointer text-neon border-2 border-neon"
+              onClick={toggleMaximize}
+            />
+          ) : (
+            <MagnifyingGlassPlusIcon
+              className="size-12 absolute bottom-2 right-2 z-50 p-2 bg-black backdrop-blur-lg rounded-full cursor-pointer text-neon border-2 border-neon"
+              onClick={toggleMaximize}
+            />
+          )}
         </div>
         <iframe
           src="../../3D/StudyPlayground.html"
