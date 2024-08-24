@@ -1,0 +1,14 @@
+numpy
+SpeechRecognition
+pyttsx3
+groq
+pvporcupine
+structlog
+pymongo
+marshmallow
+Flask-Cors
+Flask-SocketIO
+Flask
+opencv-python
+dotenv
+pyaudio
