@@ -8,6 +8,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from '../auth/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+axios.defaults.baseURL = baseURL;
+axios.defaults.headers.common['ngrok-skip-browser-warning'] = '1';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
