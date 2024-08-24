@@ -51,8 +51,14 @@ const PreviousSessions = () => {
         <div className="mt-8 w-[90%] left-0 right-0 mx-auto flex flex-col justify-center gap-5">
             <div className="bg-navbar-bg backdrop-blur-lg border-2 border-neon flex flex-col lg:flex-row items-center justify-between rounded-md py-2 px-5 text-black font-extrabold tracking-wider gap-3 lg:gap-0">
                 <div className="flex flex-col items-start justify-between">
-                    <div>Total Study Sessions = {sessions.length}</div>
-                    <div>Streak = {streak} 🔥</div>
+                    <div>Total Study Sessions : {sessions.length}</div>
+                    <div>Total Time Studied: {" "}   
+                        {sessions.reduce((acc, session) => {
+                            const [hours, minutes] = session.totalTime.split(':');
+                            return acc + parseInt(hours) * 60 + parseInt(minutes);
+                        }, 0)} minutes
+                    </div>
+                    <div>Streak : {streak} 🔥</div>
                 </div>
                 <div className="relative flex items-center border-2 rounded-full border-neon">
                     <input
