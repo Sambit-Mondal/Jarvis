@@ -8,6 +8,7 @@ from flask_socketio import SocketIO, emit
 from chat_backend import start_system, process_voice_input
 from Alert.person import detect_distraction
 import os
+
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
@@ -102,7 +103,3 @@ if __name__ == '__main__':
 
     # Run the Flask server using socketio
     socketio.run(app, '0.0.0.0', debug=True)
-
-    # Join threads to ensure they complete
-    chat_backend_thread.join()
-    person_detection_thread.join()
