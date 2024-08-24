@@ -1,5 +1,5 @@
 # Base image for the frontend
-FROM node:18 AS frontend
+FROM node:22 AS frontend
 
 # Set working directory for frontend
 WORKDIR /client
@@ -8,23 +8,25 @@ WORKDIR /client
 COPY client/package*.json ./
 
 # Install frontend dependencies
-RUN npm install
+RUN npm i
 
 # Copy frontend source code
 COPY client/ ./
 
 # Expose the port the frontend runs on (default Vite port)
-EXPOSE 3000
+EXPOSE 3005
 
 # Start the frontend application
 CMD ["npm", "start"]
 
 # Base image for the backend
-FROM python:3.11-slim AS backend
+FROM python:3.12-slim AS backend
 
-# Install PortAudio dependencies and other tools
+# Install dependencies including PortAudio, OpenCV, and other necessary libraries
 RUN apt-get update && apt-get install -y \
     portaudio19-dev \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
     gcc \
     g++ \
     && apt-get clean \
@@ -35,7 +37,7 @@ WORKDIR /server
 
 # Copy backend requirements file and install dependencies
 COPY server/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy backend source code
 COPY server/ ./
