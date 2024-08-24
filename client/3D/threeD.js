@@ -124,7 +124,7 @@ loader.load("./scene.gltf", (gltf) => {
 
   const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
   const center = boundingBox.getCenter(new THREE.Vector3());
-  camera.position.set(center.x, center.y + 10, center.z - 25.3);
+  camera.position.set(center.x, center.y + 10, center.z - 10.3);
   camera.lookAt(center); 
 });
 

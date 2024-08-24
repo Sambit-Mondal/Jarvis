@@ -91,6 +91,15 @@ recognition.addEventListener('result', e => {
       if(command.includes('open twitter')){
         window.open("https://www.twitter.com", "_blank"); 
       }
+      if(command.includes('open github')){
+        window.open("https://www.github.com", "_blank"); 
+      }
+      if(command.includes('open linkedin')){
+        window.open("https://www.linkedin.com", "_blank"); 
+      }
+      if(command.includes('open google')){
+        window.open("https://www.google.com", "_blank"); 
+      }
       if(command.includes('chai aur code')){
         window.open("https://www.youtube.com/@chaiaurcode");
       }

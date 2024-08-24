@@ -112,12 +112,15 @@
 
     .speak {
       position: absolute;
+      text-shadow: 1px 1px 2px black;
       border: 2px solid black;
       border-radius: 50%;
       background-color: red;
       color: white;
-      height: 50px;
-      width: 50px;
+      height: 60px;
+      width: 60px;
+      font-weight: 600;
+      font-size: 16px;
       cursor: pointer;
       align-items: center;
       text-align: center;
@@ -127,6 +130,10 @@
       top: 50%;
       left: 80%;
       transform: translate(-50%, -50%);
+    }
+
+    .speak:hover{
+      opacity: 0.8;
     }
 
     .wave-container {
@@ -199,23 +206,43 @@
       }
     }
     .tile-container {
-      display: flex;
-      justify-content: left;
-      width: auto;
-      height: 25px;
-      border-radius: 15px;
-      padding: 16px;
-      position: absolute;
-      top: 11%;
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(10px);
-      left: 42%;
-      transform: translateY(-50%);
-    }
+  display: flex;
+  justify-content: center;
+  width: 200px; /* Adjust width to resemble a radio */
+  height: 30px; /* Increase height to mimic radio size */
+  border-radius: 30px; /* Rounder edges for a radio look */
+  padding: 8px;
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  background: linear-gradient(to bottom, #ececec, #929292); 
+  backdrop-filter: blur(10px);
+  transform: translate(-50%, -50%); 
+  border: 2px solid #222; 
+}
+.tile-container::before,
+.tile-container::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 70px;
+  background: #222; /* Antenna color */
+  top: -70px; /* Positioning above the container */
+}
+
+.tile-container::before {
+  left: 10px; /* Position the first antenna */
+  transform: rotate(-20deg); /* Slightly tilt the antenna */
+}
+
+.tile-container::after {
+  right: 10px; /* Position the second antenna */
+  transform: rotate(20deg); /* Slightly tilt the antenna */
+}
 
     .tile {
-      height: 30px;
-      width: 35px;
+      height: 35px;
+      width: 40px;
       margin-right: 4%;
       border: 1px solid black;
       border-radius: 8px;
@@ -389,6 +416,17 @@
   document.getElementById('tile4').addEventListener('click', function () {
     handleTileClick('tile4', 'audio4');
   });
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const speak = () => {
+      const utterance = new SpeechSynthesisUtterance("Intializing Jarvis... Chheen Tupuk Dum-Dum");
+      const voices = speechSynthesis.getVoices();
+      utterance.voice = voices[0]; 
+      speechSynthesis.speak(utterance);
+    };
+
+    speak();
+  })
   </script>
   </body>
 
