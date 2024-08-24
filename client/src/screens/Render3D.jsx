@@ -42,7 +42,7 @@ const Render3D = () => {
 
     checkDistractionRepeatedly();
 
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []); 
 
   const handleEndSession = async () => {
     const endTime = new Date();
