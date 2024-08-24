@@ -12,6 +12,7 @@ RUN npm i
 
 # Copy frontend source code
 COPY client/ ./
+COPY client/ .env/
 
 # Expose the port the frontend runs on (default Vite port)
 EXPOSE 3005
@@ -41,6 +42,7 @@ RUN pip install -r requirements.txt
 
 # Copy backend source code
 COPY server/ ./
+COPY server/ .env/
 
 # Expose the port the backend runs on
 EXPOSE 5000
