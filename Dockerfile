@@ -4,6 +4,9 @@ FROM node:22 AS frontend
 # Set working directory for frontend
 WORKDIR /client
 
+# Copy the .env file
+COPY server/.env .env
+
 # Copy frontend package.json and package-lock.json
 COPY client/package*.json ./
 
@@ -12,7 +15,6 @@ RUN npm i
 
 # Copy frontend source code
 COPY client/ ./
-COPY client/ .env/
 
 # Expose the port the frontend runs on (default Vite port)
 EXPOSE 3005
@@ -36,13 +38,15 @@ RUN apt-get update && apt-get install -y \
 # Set working directory for backend
 WORKDIR /server
 
+# Copy the .env file
+COPY server/.env .env
+
 # Copy backend requirements file and install dependencies
 COPY server/requirements.txt ./
 RUN pip install -r requirements.txt
 
 # Copy backend source code
 COPY server/ ./
-COPY server/ .env/
 
 # Expose the port the backend runs on
 EXPOSE 5000
