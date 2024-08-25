@@ -54,7 +54,7 @@ const Render3D = () => {
   const checkDistractionRepeatedly = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:5000/detect_distraction"
+        "/detect_distraction"
       );
       console.log(response.data);
       setIsDistracted(response.data.distracted);
@@ -87,7 +87,7 @@ const Render3D = () => {
       };
       try {
         const res = await axios.post(
-          "http://127.0.0.1:5000/session",
+          "/session",
           sessionData
         );
         if (res.status === 201) {
@@ -144,7 +144,7 @@ const Render3D = () => {
           )}
         </div>
         <iframe
-          src="../../3D/StudyPlayground.html"
+          src="https://c487-43-251-179-215.ngrok-free.app/client/3D/StudyPlayground.html"
           title="HTML Content"
           height="100%"
           width="100%"

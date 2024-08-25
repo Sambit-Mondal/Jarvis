@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from marshmallow import Schema, fields, ValidationError
@@ -9,11 +10,16 @@ from chat_backend import start_system, process_voice_input
 from Alert.person import detect_distraction
 import os
 
-app = Flask(__name__)
-CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
-client = MongoClient(os.getenv('mongodb+srv://jarvis:jarvis123@jarvis-cluster.7afrxiy.mongodb.net/?retryWrites=true&w=majority&appName=Jarvis-Cluster'))
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "https://jarvis-mu-lac.vercel.app"]}})
+
+# Update SocketIO to allow multiple origins
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:5173", "https://jarvis-mu-lac.vercel.app"])
+
+client = MongoClient("mongodb+srv://jarvis:jarvis123@jarvis-cluster.7afrxiy.mongodb.net/?retryWrites=true&w=majority&appName=Jarvis-Cluster")  # Use environment variable for MongoDB URI
 db = client['statusCode']
 session_collection = db['session']
 
@@ -40,7 +46,11 @@ def create_session():
         session_collection.insert_one(validated_data)
         return jsonify({"message": "Session created successfully!"}), 201
     except ValidationError as err:
+        logging.error(f"Validation error: {err.messages}")
         return jsonify(err.messages), 400
+    except Exception as e:
+        logging.error(f"Error creating session: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/session', methods=['GET'])
 def get_sessions():
@@ -57,10 +67,10 @@ def get_sessions():
 def detect_distraction_route():
     try:
         is_distracted = detect_distraction()  # Call your detection function here
-        print("Distraction Status:", is_distracted)
+        logging.info(f"Distraction Status: {is_distracted}")
         return jsonify({"distracted": is_distracted})
     except Exception as e:
-        print(f"Error in detecting distraction: {e}")
+        logging.error(f"Error in detecting distraction: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/')
@@ -69,11 +79,11 @@ def index():
 
 @socketio.on('connect')
 def handle_connect():
-    print('Client connected')
+    logging.info('Client connected')
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    print('Client disconnected')
+    logging.info('Client disconnected')
 
 @socketio.on('user_voice_input')
 def handle_user_voice_input(json):
@@ -85,21 +95,24 @@ def start_person_detection():
     try:
         detect_distraction()
     except Exception as e:
-        print(f"Error in person detection: {e}")
+        logging.error(f"Error in person detection: {e}")
 
 def start_chat_backend():
     try:
         start_system()
     except Exception as e:
-        print(f"Error in chat backend: {e}")
+        logging.error(f"Error in chat backend: {e}")
 
 if __name__ == '__main__':
-    # Start the chat_backend and person detection in separate threads
-    chat_backend_thread = threading.Thread(target=start_chat_backend)
-    person_detection_thread = threading.Thread(target=start_person_detection)
+    try:
+        # Start the chat_backend and person detection in separate threads
+        chat_backend_thread = threading.Thread(target=start_chat_backend)
+        person_detection_thread = threading.Thread(target=start_person_detection)
 
-    chat_backend_thread.start()
-    person_detection_thread.start()
+        chat_backend_thread.start()
+        person_detection_thread.start()
 
-    # Run the Flask server using socketio
-    socketio.run(app, '0.0.0.0', debug=True)
+        # Run the Flask server using socketio
+        socketio.run(app, '0.0.0.0', debug=True)
+    except Exception as e:
+        logging.error(f"Server failed to start: {e}")
