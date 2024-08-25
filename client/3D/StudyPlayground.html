@@ -350,7 +350,7 @@
     <audio id="audio4" src="./lofi.mp3" loop></audio>
 
     <script type="module" src="threeD.js"></script>
-    <script src="transcript.js"></script>
+    <script type="module" src="transcript.js"></script>
     <script>
     function sendVoiceInput(transcript) {
       socket.emit('user_voice_input', { transcript });
