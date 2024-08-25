@@ -145,7 +145,7 @@ const Render3D = () => {
           )}
         </div>
         <iframe
-          src={`${StudyPlayground}`}
+          src={StudyPlayground}
           title="HTML Content"
           height="100%"
           width="100%"
