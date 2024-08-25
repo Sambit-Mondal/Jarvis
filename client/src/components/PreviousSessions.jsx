@@ -43,6 +43,13 @@ const PreviousSessions = () => {
         calculateStreak();
     }, [sessions]);
 
+    const addFiveHours = (date, time) => {
+        return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm")
+            .add(5, "hour")
+            .add(30, "minutes")
+            .format("HH:mm:ss");
+    };
+
     const filteredSessions = sessions.filter(session =>
         session.date.includes(searchTerm)
     );
@@ -86,8 +93,8 @@ const PreviousSessions = () => {
                             {filteredSessions.map((session, index) => (
                                 <tr key={index}>
                                     <td className="py-2 text-center align-middle whitespace-nowrap">{session.date}</td>
-                                    <td className="py-2 text-center align-middle whitespace-nowrap">{session.startTime}</td>
-                                    <td className="py-2 text-center align-middle whitespace-nowrap">{session.endTime}</td>
+                                    <td className="py-2 text-center align-middle whitespace-nowrap">{addFiveHours(session.date, session.startTime)}</td>
+                                    <td className="py-2 text-center align-middle whitespace-nowrap">{addFiveHours(session.date, session.endTime)}</td>
                                     <td className="py-2 text-center align-middle whitespace-nowrap">{session.totalTime}</td>
                                 </tr>
                             ))}
