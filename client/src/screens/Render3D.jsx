@@ -5,18 +5,73 @@ import {
   MagnifyingGlassPlusIcon,
 } from "@heroicons/react/24/solid";
 import bgVideo from "../assets/bgVideo.mp4";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { getAuth } from "firebase/auth";
 
 const Render3D = () => {
+  const location = useLocation();
   const [isMaximized, setIsMaximized] = useState(false);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [isDistracted, setIsDistracted] = useState(false);
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const maximize = queryParams.get('maximize');
+    if (maximize === 'true') {
+      setIsMaximized(true);
+      enterFullscreen();
+    }
+  }, [location]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (isMaximized && event.key === 'Escape') {
+        event.preventDefault(); // Prevent default action of the Escape key
+        event.stopPropagation(); // Stop the event from propagating
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMaximized]);
+
+  const enterFullscreen = () => {
+    if (containerRef.current.requestFullscreen) {
+      containerRef.current.requestFullscreen();
+    } else if (containerRef.current.mozRequestFullScreen) {
+      containerRef.current.mozRequestFullScreen();
+    } else if (containerRef.current.webkitRequestFullscreen) {
+      containerRef.current.webkitRequestFullscreen();
+    } else if (containerRef.current.msRequestFullscreen) {
+      containerRef.current.msRequestFullscreen();
+    }
+  };
+
+  const exitFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+  };
 
   const toggleMaximize = () => {
+    if (isMaximized) {
+      exitFullscreen();
+    } else {
+      enterFullscreen();
+    }
     setIsMaximized(!isMaximized);
   };
 
@@ -41,8 +96,7 @@ const Render3D = () => {
     setSessionStartTime(new Date());
 
     checkDistractionRepeatedly();
-
-  }, []); 
+  }, []);
 
   const handleEndSession = async () => {
     const endTime = new Date();
@@ -63,6 +117,7 @@ const Render3D = () => {
         if (res.status === 201) {
           console.log("Session created successfully");
         }
+        setIsMaximized(false);
         navigate("/study");
       } catch (error) {
         console.log("Error creating session:", error);
@@ -73,7 +128,7 @@ const Render3D = () => {
   };
 
   return (
-    <div className="relative h-screen w-full">
+    <div ref={containerRef} className="relative h-screen w-full">
       <video
         ref={videoRef}
         className="absolute top-0 left-0 w-full h-full object-cover -z-10 transition duration-150 ease-in-out brightness-[50%] lg:brightness-[30%]"
@@ -82,24 +137,9 @@ const Render3D = () => {
         loop
         muted
       />
-      {isMaximized ? (
-        <MagnifyingGlassMinusIcon
-          className="size-12 absolute bottom-2 right-2 z-50 p-2 bg-black backdrop-blur-lg rounded-full cursor-pointer text-neon border-2 border-neon"
-          onClick={toggleMaximize}
-        />
-      ) : (
-        <MagnifyingGlassPlusIcon
-          className="size-12 absolute bottom-2 right-2 z-50 p-2 bg-black backdrop-blur-lg rounded-full cursor-pointer text-neon border-2 border-neon"
-          onClick={toggleMaximize}
-        />
-      )}
-
-      {!isMaximized && <Navbar />}
-
       <div
         style={{
           height: "100vh",
-          padding: isMaximized ? "0px" : "100px",
           width: "100%",
           transition: "0.15s ease-in-out",
         }}

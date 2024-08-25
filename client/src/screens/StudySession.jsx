@@ -26,7 +26,6 @@ const StudySession = () => {
 
   return (
     <div className='relative min-h-screen overflow-hidden bg-fixed bg-center bg-cover '>
-      
       <video
         ref={videoRef}
         className='absolute top-0 left-0 w-full h-full object-cover -z-10 transition duration-150 ease-in-out brightness-[50%] lg:brightness-[30%]'
@@ -35,22 +34,20 @@ const StudySession = () => {
         loop
         muted
       />
-
       <div className='mt-32 md:mt-36 mb-20 lg:mb-0 w-full'>
         <div className='flex items-center justify-between w-full h-auto px-16'>
           <div className='text-white text-3xl'>
             <p>Welcome, <span className='text-neon text-6xl'>{firstName}</span></p>
           </div>
-          <NavLink to='/study/session'>
+          <NavLink to='/study/session?maximize=true'>
             <button className='hidden bg-white lg:flex items-center justify-between py-2 px-5 gap-4 rounded-full transition duration-300 ease-in-out hover:scale-105'>
               <PlusCircleIcon className='size-7' />
               Create a New Study Session
             </button>
           </NavLink>
         </div>
-
         <div className='mt-5 px-2 flex flex-col items-center justify-center'>
-          <NavLink to='/study/session'>
+          <NavLink to='/study/session?maximize=true'>
             <button className='bg-white lg:hidden flex items-center justify-between py-2 px-5 mx-2 gap-4 rounded-full transition duration-300 ease-in-out hover:scale-105'>
               <PlusCircleIcon className='size-7' />
               Create a New Study Session
@@ -67,7 +64,6 @@ const StudySession = () => {
           <hr className='w-44 bg-neon border-0 h-[1px] mt-4 lg:hidden' />
         </div>
       </div>
-
       <PreviousSessions />
       <Footer />
     </div>
