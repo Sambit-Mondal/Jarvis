@@ -46,7 +46,7 @@ document.addEventListener('click', () => {
 });
 
 // Socket.io connection
-const socket = io.connect('http://127.0.0.1:5000');
+const socket = io.connect('https://6796-43-251-179-140.ngrok-free.app');
 
 function sendTranscriptToBackend(transcript) {
   socket.emit('user_voice_input', { transcript });
