@@ -8,7 +8,6 @@ import bgVideo from "../assets/bgVideo.mp4";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAuth } from "firebase/auth";
-import StudyPlayground from '../../3D/StudyPlayground.html'
 
 const Render3D = () => {
   const [isMaximized, setIsMaximized] = useState(false);
@@ -145,7 +144,7 @@ const Render3D = () => {
           )}
         </div>
         <iframe
-          src={`${StudyPlayground}`}
+          src="../../3D/StudyPlayground.html"
           title="HTML Content"
           height="100%"
           width="100%"
