@@ -63,7 +63,7 @@ const Render3D = () => {
         if (res.status === 201) {
           console.log("Session created successfully");
         }
-        navigate("/");
+        navigate("/study");
       } catch (error) {
         console.log("Error creating session:", error);
       }
