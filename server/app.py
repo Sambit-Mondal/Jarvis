@@ -14,10 +14,10 @@ import os
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "https://jarvis-mu-lac.vercel.app"]}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "https://jarvis-mu-lac.vercel.app","https://c487-43-251-179-215.ngrok-free.app"]}})
 
 # Update SocketIO to allow multiple origins
-socketio = SocketIO(app, cors_allowed_origins=["http://localhost:5173", "https://jarvis-mu-lac.vercel.app"])
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:5173", "https://jarvis-mu-lac.vercel.app","https://c487-43-251-179-215.ngrok-free.app"])
 
 client = MongoClient("mongodb+srv://jarvis:jarvis123@jarvis-cluster.7afrxiy.mongodb.net/?retryWrites=true&w=majority&appName=Jarvis-Cluster")  # Use environment variable for MongoDB URI
 db = client['statusCode']
