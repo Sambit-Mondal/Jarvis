@@ -184,7 +184,7 @@ const commonWebsites = {
   "reddit programming": "https://www.reddit.com/r/programming",
   "dev.to": "https://dev.to",
   "hashnode": "https://hashnode.com",
-  "byjus": "https://www.byjus.com",
+  "byju's": "https://www.byjus.com",
   "unacademy": "https://www.unacademy.com",
   "toppr": "https://www.toppr.com",
   "extramarks": "https://www.extramarks.com",
@@ -352,24 +352,7 @@ recognition.addEventListener('end', () => {
   }
 });
 
-const speak = document.createElement('button');
-speak.textContent = 'Speak';
-speak.classList.add('speak');
-document.body.appendChild(speak);
 
-speak.addEventListener('click', () => {
-  if (isRecognitionActive) {
-    recognition.stop();
-    isRecognitionActive = false;
-    speak.textContent = 'Speak';
-    waveContainer.style.display = 'none';
-  } else {
-    recognition.start();
-    isRecognitionActive = true;
-    speak.textContent = 'Stop';
-    waveContainer.style.display = 'flex';
-  }
-});
 
 // Listen for the response from the backend
 socket.on('python_response', function(data) {

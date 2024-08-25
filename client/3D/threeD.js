@@ -95,6 +95,7 @@ const room = createRoom(roomSize);
 scene.add(room);
 
 const loader = new GLTFLoader();
+let hand, wrist;
 loader.load("./scene.gltf", (gltf) => {
   scene.add(gltf.scene);
   gltf.scene.scale.set(0.15, 0.15, 0.15); 
@@ -119,7 +120,19 @@ loader.load("./scene.gltf", (gltf) => {
     mommy.scene.position.z = 10;
     mommy.scene.rotateY(204.2);
    
-    mommyLight.position.set(mommy.scene.position.x - 10, mommy.scene.position.y  , mommy.scene.position.z - 10);
+    mommyLight.position.set(mommy.scene.position.x - 10, mommy.scene.position.y, mommy.scene.position.z - 10);
+
+    mommy.scene.traverse((child) => {
+      if (child.isMesh) {
+        if (child.name === 'Object_15') {
+          hand = child;
+        } else if (child.name === 'Object_18') {  
+          wrist = child;
+          wrist.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        }
+      }
+    });
+
   });
 
   const boundingBox = new THREE.Box3().setFromObject(gltf.scene);
@@ -133,10 +146,43 @@ const animate = function () {
   controls.update(); 
   renderer.render(scene, camera);
 };
+
 animate();
 
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+const speak = document.createElement('button');
+speak.textContent = 'Speak';
+speak.classList.add('speak');
+document.body.appendChild(speak);
+
+speak.addEventListener('click', () => {
+  if (isRecognitionActive) {
+    recognition.stop();
+    isRecognitionActive = false;
+    speak.textContent = 'Speak';
+    waveContainer.style.display = 'none';
+  } else {
+    recognition.start();
+    isRecognitionActive = true;
+    speak.textContent = 'Stop';
+    waveContainer.style.display = 'flex';
+
+    // Check if wrist is defined
+    if (wrist) {
+      console.log("Animating wrist material:", wrist.material);
+      gsap.to(wrist.material.color, {
+       z: "+=50",
+        duration: 2,
+        yoyo: true,
+        repeat: -1
+      });
+    } else {
+      console.error("Wrist object not found!");
+    }
+  }
 });
