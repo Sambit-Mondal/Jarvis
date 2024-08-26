@@ -45,11 +45,12 @@ The distractor detection feature helps you stay focused. If the system detects t
 8. <strong>Focus Enhancement:</strong> The distractor detection feature helps students maintain focus during their study sessions.
 
 ## Team Members
-[Manveer Singh Saggu](https://linkedin.com/in/): Front-end developer
-Ganaik Deshmukh: AI / ML
-Adarsh Rout: AI / ML
-[Sambit Mondal](https://linkedin.com/sambitm02): Front-end developer 
-Shashank Raj: Back-end developer
+- [Manveer Singh Saggu](https://www.linkedin.com/in/manveer-singh-147292220/): Front-end developer
+- [Ganaik Deshmukh](https://www.linkedin.com/in/ganaik-deshmukh-328a11281/): AI / ML
+- [Adarsh Rout](https://www.linkedin.com/in/adarsh-rout-only568/): AI / ML
+- [Sambit Mondal](https://linkedin.com/sambitm02): Front-end developer
+- [Shashank Raj](https://www.linkedin.com/in/shashank-raj-7bb530254/): Back-end developer
+
 
 ## Installation
 
