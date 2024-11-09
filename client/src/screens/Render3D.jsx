@@ -1,9 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import Navbar from "../components/Navbar";
-import {
-  MagnifyingGlassMinusIcon,
-  MagnifyingGlassPlusIcon,
-} from "@heroicons/react/24/solid";
 import bgVideo from "../assets/bgVideo.mp4";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -28,10 +23,12 @@ const Render3D = () => {
   }, [location]);
 
   useEffect(() => {
+
     const handleKeyDown = (event) => {
-      if (isMaximized && event.key === 'Escape') {
-        event.preventDefault(); // Prevent default action of the Escape key
-        event.stopPropagation(); // Stop the event from propagating
+      event = event || window.event || {};
+      var charCode = event.charCode || event.keyCode || event.which;
+      if (isMaximized && charCode === 27) {
+        return false;
       }
     };
 
@@ -52,27 +49,6 @@ const Render3D = () => {
     } else if (containerRef.current.msRequestFullscreen) {
       containerRef.current.msRequestFullscreen();
     }
-  };
-
-  const exitFullscreen = () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-  };
-
-  const toggleMaximize = () => {
-    if (isMaximized) {
-      exitFullscreen();
-    } else {
-      enterFullscreen();
-    }
-    setIsMaximized(!isMaximized);
   };
 
   const checkDistractionRepeatedly = async () => {
