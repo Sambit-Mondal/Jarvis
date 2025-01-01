@@ -2,6 +2,7 @@ numpy
 SpeechRecognition
 pyttsx3
 groq
+sounddevice
 pvporcupine
 structlog
 pymongo
@@ -12,3 +13,4 @@ Flask
 opencv-python
 python-dotenv
 pyaudio
+pipwin

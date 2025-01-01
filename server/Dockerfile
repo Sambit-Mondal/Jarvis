@@ -21,7 +21,7 @@ COPY server/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend source code
-COPY server/ ./
+COPY . .
 
 # Expose the port the backend runs on
 EXPOSE 5000
