@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory for backend
-WORKDIR /server
+WORKDIR /
 
 # Copy only requirements file to leverage Docker layer caching
 COPY requirements.txt ./requirements.txt
