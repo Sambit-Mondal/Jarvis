@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /server
 
 # Copy only requirements file to leverage Docker layer caching
-COPY server/requirements.txt ./requirements.txt
+COPY requirements.txt ./requirements.txt
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
