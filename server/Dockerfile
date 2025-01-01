@@ -27,4 +27,4 @@ COPY . .
 EXPOSE 5000
 
 # Use a production-ready server
-CMD ["python", "app"]
+CMD ["python", "app.py"]
