@@ -1,0 +1,30 @@
+# Base image for the backend
+FROM python:3.12-slim AS backend
+
+# Install dependencies including PortAudio, OpenCV, and other necessary libraries
+RUN apt-get update && apt-get install -y \
+    portaudio19-dev \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    gcc \
+    g++ \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory for backend
+WORKDIR /server
+
+# Copy only requirements file to leverage Docker layer caching
+COPY server/requirements.txt ./requirements.txt
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy backend source code
+COPY server/ ./
+
+# Expose the port the backend runs on
+EXPOSE 5000
+
+# Use a production-ready server
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
