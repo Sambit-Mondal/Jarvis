@@ -18,7 +18,7 @@ WORKDIR /
 COPY requirements.txt ./requirements.txt
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy backend source code
 COPY . .
